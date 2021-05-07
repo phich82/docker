@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  backend:
+    driver: "bridge"
+
 services:
   pgsql:
     build: ./postgres
@@ -13,3 +17,15 @@ services:
     volumes: 
       - ./postgres/data:/var/lib/postgresql/data
     restart: always
+    networks: 
+      - backend
+  redis:
+    build: ./redis
+    ports:
+      - '63790:6379'
+    # volumes: 
+      # - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    privileged: true
+    networks: 
+      - backend
